@@ -7,9 +7,7 @@
  */
 
 PFont font;  // PFont Variable definieren
-
 String data[]; 
-
 
 void setup() {
   size(400, 400);
