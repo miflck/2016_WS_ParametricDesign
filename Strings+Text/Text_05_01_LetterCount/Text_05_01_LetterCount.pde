@@ -2,7 +2,7 @@
  *  Text 02
  *  Text einlesen
  
- *  HKB 16 Parametric Design, MR
+ *  HKB 16 Parametric Design, MF
  */
 
 

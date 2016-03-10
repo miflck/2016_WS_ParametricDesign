@@ -2,7 +2,7 @@
  *  Text 02
  *  Text einlesen
  
- *  HKB 16 Parametric Design, MF
+ *  HKB 16 Parametric Design, MR
  */
 
 
@@ -11,12 +11,12 @@ PFont font;  // PFont Variable definieren
 
 String[] lines;
 String joinedText;
-
 //Sortierter String, gegen den abgeglichen werden kann 
 String alphabet ="abcdefghijklmnopqrstuvwxyz ,.;:\"«»";
 
 int [] counter=new int[alphabet.length()];
 
+PVector[] positions;
 
 
 
@@ -25,11 +25,9 @@ int index = 0;
 float posx=0;
 float posy=0;
 float lineheight=40;
-int leading=5;
+int leading=20;
 
-
-boolean debug=false;
-
+boolean debug=true;
 
 void setup() {
   size(800, 800);
@@ -50,18 +48,28 @@ void setup() {
     counter[i]=0;
   }
 
+  positions=new PVector[joinedText.length()];
+
+  posx=0;
+  posy=0;
+  textFont(font, 30);
+  lineheight=textAscent()+textDescent();
   for (int i=0; i<joinedText.length(); i++) {
     char c = joinedText.charAt(i); 
-    countThisChar(c);
+    positions[i]=new PVector(posx, posy);
+    posx+=textWidth(c);
+    if (posx > width-textWidth(c)) {
+      posx=0;
+      posy+=lineheight+leading;
+    }
   }
 
-  println(counter);
+  println(positions);
 }
 
 void draw() {
 
   background(255);
-
   pushMatrix();
   translate(0, 50);
   color myColor=color(0, 20);
@@ -71,41 +79,18 @@ void draw() {
   for (int i=0; i<joinedText.length(); i++) {
     char c = joinedText.charAt(i); 
     int index=alphabet.indexOf(c);
-    float factor;
-    if (index>=0) {
-      factor=map(counter[index], 0, 70, 5, 48);
-    } else {
-      factor=10;
-    }
-    textFont(font, factor);      // Font und Grösse angeben
-      lineheight=textAscent()+textDescent();
-   myColor=(int)c;
-
     pushMatrix();
-    translate(posx, posy);
+    translate(positions[i].x, positions[i].y);
     noStroke();
-    fill(myColor);
-    rect(0, -lineheight, textWidth(c), lineheight);
     fill(0);
     if (debug) text(c, 0, 0);
     popMatrix();
-    posx+=textWidth(c);
-
-    if (posx > width-textWidth(c)) { // umbruch vor Canvasende
-      posx=0;
-      posy+=lineheight+leading;
-    }
   }
 
   popMatrix();
 }
 
 
-void countThisChar(char c) {
-  int index=alphabet.indexOf(c);
-  println(index);
-  if (index>=0)counter[index]+=1; // wenns nicht im alphabet ist, ignorieren
-}
 
 
 void keyPressed() {

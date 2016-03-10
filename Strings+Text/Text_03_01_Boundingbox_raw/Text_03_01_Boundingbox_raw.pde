@@ -1,9 +1,7 @@
 /* 
- WS Parametric Design 2016
- Typografie
+ *  Text einlesen
  
- 
- //--------------------------------------------------
+ *  HKB 16 Parametric Design, MF
  */
 
 
